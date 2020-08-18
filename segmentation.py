@@ -39,7 +39,7 @@ def segment(image, threshold=25):
 
     # threshold the diff image
     # if certain pixels pass this threshold, we will consider it as the hand region, smaller than threshold = 0
-    thresholded = cv2. threshold(diff, threshold, 255, cv2.THRESH_BINARY)[1]
+    thresholded = cv2.threshold(diff, threshold, 255, cv2.THRESH_BINARY)[1]
 
     # get contours from thresholded which is now a binary image
     (cnts, _) = cv2.findContours(thresholded.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -58,19 +58,33 @@ if __name__ == "__main__":
     # get default camera of device
     camera = cv2.VideoCapture(0)
 
+    # region of interest (ROI) coordinates
+    top, right, bottom, left = 10, 350, 225, 590
+
     # initialize the number of frames
     num_frames = 0
     while(True):
         # grabs, decodes, and returns current frame
         (grabbed, frame) = camera.read()
 
+        # resize the frame
+        frame = imutils.resize(frame, width=700)
+
+        # flip frame to avoid mirror image
+        frame = cv2.flip(frame, 1)
+
         # clone the frame
         clone = frame.copy()
 
-        # maybe need to flip the frame because right now it is a mirror image
+        # get the height and width of the frame
+        (height, width) = frame.shape[:2]
+
+        # get the ROI, numpy slicing
+        roi = frame[top:bottom, right:left]
 
         # findContours requires a monochrome image, so we must turn frame to black and white
-        gray = cv2.cvtColor(clone, cv2.COLOR_BGR2GRAY)
+        gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+        gray = cv2.GaussianBlur(gray, (7, 7), 0)
 
         # compute the running average over 30 frames, this is now the background
         # after 30 frames, we segment. Anything added is now the foreground
@@ -78,10 +92,14 @@ if __name__ == "__main__":
             run_avg(gray, aWeight)
         else:
             hand = segment(gray)
-            #
+
             if hand is not None:
                 (thresholded, segmented) = hand
+                cv2.drawContours(clone, [segmented + (right, top)], -1, (0, 0, 255))
                 cv2.imshow("Thesholded", thresholded)
+
+        # draw the segmented hand
+        cv2.rectangle(clone, (left, top), (right, bottom), (0, 255, 0), 2)
 
         # increment frames
         num_frames += 1
