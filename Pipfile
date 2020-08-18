@@ -9,6 +9,7 @@ verify_ssl = true
 opencv-python = "*"
 imutils = "*"
 numpy = "*"
+jupyter = "*"
 
 [requires]
 python_version = "3.7"

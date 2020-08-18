@@ -51,3 +51,47 @@ def segment(image, threshold=25):
         # get the maximum contour obtaining the hand
         segmented = max(cnts, key=cv2.contourArea)
         return (thresholded, segmented)
+
+if __name__ == "__main__":
+    aWeight = 0.5
+
+    # get default camera of device
+    camera = cv2.VideoCapture(0)
+
+    # initialize the number of frames
+    num_frames = 0
+    while(True):
+        # grabs, decodes, and returns current frame
+        (grabbed, frame) = camera.read()
+
+        # clone the frame
+        clone = frame.copy()
+
+        # maybe need to flip the frame because right now it is a mirror image
+
+        # findContours requires a monochrome image, so we must turn frame to black and white
+        gray = cv2.cvtColor(clone, cv2.COLOR_BGR2GRAY)
+
+        # compute the running average over 30 frames, this is now the background
+        # after 30 frames, we segment. Anything added is now the foreground
+        if num_frames<30:
+            run_avg(gray, aWeight)
+        else:
+            hand = segment(gray)
+            #
+            if hand is not None:
+                (thresholded, segmented) = hand
+                cv2.imshow("Thesholded", thresholded)
+
+        # increment frames
+        num_frames += 1
+
+        cv2.imshow("Video Feed", clone)
+
+        keypress = cv2.waitKey(1) & 0xFF
+        if keypress == ord("q"):
+            break
+
+camera.release()
+cv2.destroyAllWindows()
+
