@@ -15,4 +15,6 @@ current frame (hand + background) - background = isolated foreground (just hand)
 Take the absolute difference obtained above and threshold is so values above a certain threshold is 1 and below is 0.
 
 # Contour Extraction
-With the threshold, we extract the contour
+With the threshold, we extract the contour, which we assume to be the largest object. So if there is another object
+larger than the hand then the contour of that object will now be the main focus.
+
