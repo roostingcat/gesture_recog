@@ -1,6 +1,7 @@
 import cv2
 import imutils
 import numpy as np
+from count import count
 
 # set background as global variable
 
@@ -97,6 +98,10 @@ if __name__ == "__main__":
                 (thresholded, segmented) = hand
                 cv2.drawContours(clone, [segmented + (right, top)], -1, (0, 0, 255))
                 cv2.imshow("Thesholded", thresholded)
+
+                # count the number of fingers
+                fingers = count(thresholded, segmented)
+                cv2.putText(clone, str(fingers), (70, 45), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
         # draw the segmented hand
         cv2.rectangle(clone, (left, top), (right, bottom), (0, 255, 0), 2)
