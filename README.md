@@ -11,6 +11,11 @@ Use a running average to identify the background, which we will then use to isol
 
 current frame (hand + background) - background = isolated foreground (just hand)
 
+<div align='center'>
+    <img src='images/yes_hand.jpg'>
+</div>
+
+
 ## Motion Detection and Thresholding
 Take the absolute difference obtained above and threshold is so values above a certain threshold is 1 and below is 0.
 
