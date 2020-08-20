@@ -12,12 +12,19 @@ Use a running average to identify the background, which we will then use to isol
 current frame (hand + background) - background = isolated foreground (just hand)
 
 <div align='center'>
-    <img src='images/yes_hand.jpg'>
+    <img src='images/no_hand.JPG'>
+    <img src='images/yes_hand.JPG'>
+    <img src='images/diff.png'>
 </div>
 
 
 ## Motion Detection and Thresholding
 Take the absolute difference obtained above and threshold is so values above a certain threshold is 1 and below is 0.
+
+<div align='center'>
+    <img src='images/threshold.png'>
+    <img src='images/roi.png'>
+</div>
 
 ## Contour Extraction
 With the threshold, we extract the contour, which we assume to be the largest object. So if there is another object
