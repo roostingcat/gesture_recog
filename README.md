@@ -23,7 +23,7 @@ Take the absolute difference obtained above and threshold is so values above a c
 
 <div align='center'>
     <img src='images/threshold.png' width="256" height="144">
-    <img src='images/roi.png'>
+    <img src='images/roi.png' width="144" height="144">
 </div>
 
 ## Contour Extraction
@@ -57,13 +57,13 @@ be black.
 </div>
 
 <div align='center'>
-    <img src='images/circle_roi.png'>
-    <img src='images/circle_roi2.png'>
+    <img src='images/circle_roi.png' width="144" height="144">
+    <img src='images/circle_roi2.png' width="144" height="144">
 </div>
 
 ## Count
 <div align='center'>
-    <img src='images/circle_contours.png'>
+    <img src='images/circle_contours.png' width="144" height="144">
 </div>
 We get a number of different contours from the circular mask. The smaller contours are more likely to be fingers, so we
 only count them.
