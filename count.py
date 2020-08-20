@@ -1,5 +1,4 @@
 import cv2
-import imutils
 import numpy as np
 from sklearn.metrics import pairwise
 
@@ -15,9 +14,9 @@ def count(thresholded, segmented):
 
     # finds extreme top, bottom, left, and right points of convexhull
     extreme_top = tuple(chull[chull[:, :, 1].argmax()][0])
-    extreme_bottom = tuple(chull[chull[:, :, 1].argmax()][0])
+    extreme_bottom = tuple(chull[chull[:, :, 1].argmin()][0])
     extreme_left = tuple(chull[chull[:, :, 0].argmax()][0])
-    extreme_right = tuple(chull[chull[:, :, 0].argmax()][0])
+    extreme_right = tuple(chull[chull[:, :, 0].argmin()][0])
 
     # finds the center of the palm using the extreme points
     cY = int((extreme_top[1] + extreme_bottom[1])/2)
@@ -48,9 +47,8 @@ def count(thresholded, segmented):
     for c in cnts:
         (x, y, w, h) = cv2.boundingRect(c)
 
-        # increment finger count as long as not wrist and number of points along contour
-        # is less than 25% of circumference
-        if ((cY + (cY * 0.25)) > (y + h)) and ((circumference * 0.25) > c.shape[0]):
+        # increment finger count as long as the contour is less than 25% of circumference
+        if cv2.arcLength(c,False) < (0.20 * circumference):
             count += 1
 
     return count
