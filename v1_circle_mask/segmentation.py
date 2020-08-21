@@ -1,6 +1,5 @@
 import cv2
 import imutils
-import numpy as np
 from count import count
 
 # set background as global variable
